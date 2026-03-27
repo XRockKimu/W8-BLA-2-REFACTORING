@@ -4,13 +4,14 @@ import 'package:flutter/material.dart';
 
 import '../../../model/ride/locations.dart';
 import '../../../model/ride_pref/ride_pref.dart';
-import '../../../services/ride_prefs_service.dart';
 import '../../../utils/animations_util.dart';
 import '../../../utils/date_time_utils.dart';
 import '../../theme/theme.dart';
 import '../buttons/bla_icon_button.dart';
 import 'bla_location_picker.dart';
 import 'bla_seat_picker.dart';
+
+const int maxAllowedSeats = 8;
 
 ///
 /// A  RidePreference Picker is a view to pick a RidePreference:
@@ -51,10 +52,11 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
   }
 
   @override
-  // TODO  - This kind of update should not be usefull with states watch () !!
-  void didUpdateWidget(BlaRidePreferencePicker w) {
-    super.didUpdateWidget(w);
-    init();
+  void didUpdateWidget(BlaRidePreferencePicker oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initRidePreference != oldWidget.initRidePreference) {
+      init();
+    }
   }
 
   void init() {
@@ -114,7 +116,7 @@ class _BlaRidePreferencePickerState extends State<BlaRidePreferencePicker> {
       AnimationUtils.createRightToLeftRoute(
         BlaSeatPicker(
           initSeats: requestedSeats,
-          maxSeat: RidePrefsService.maxAllowedSeats,
+          maxSeat: maxAllowedSeats,
         ),
       ),
     );
